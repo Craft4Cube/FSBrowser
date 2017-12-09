@@ -161,8 +161,10 @@
 							$fs_dir = file_get_contents("../accounts/$usr.home");
 						}
 						
-						if (!(strpos($fs_dir, file_get_contents("../accounts/$usr.home")) !== false)) {
-							$fs_dir = file_get_contents("../accounts/$usr.home");
+						if (file_exists("../accounts/$usr.home")) {
+							if (!(strpos($fs_dir, file_get_contents("../accounts/$usr.home")) !== false)) {
+								$fs_dir = file_get_contents("../accounts/$usr.home");
+							}
 						}
 
 						$prev_dir = substr($fs_dir , 0,strrpos($fs_dir , '/'));
