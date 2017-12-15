@@ -7,15 +7,33 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 		<title>FS Browser 1.0</title>
-		<style>
-			body  {
-				background-image: url("background.jpg");
-				background-repeat: no-repeat;
-				background-attachment: fixed;
-				background-size:cover;
-				background-position:center;
+		<?php
+			error_reporting(0);
+			ini_set('display_errors', 0);
+			//***START*** -> Image of the Day
+			$day = date("j");
+			$iday = file_get_contents("iotda.dat");
+			$img = file_get_contents("iotdb.dat");
+			$images = glob('img/*.jpg', GLOB_BRACE);
+			shuffle($images);
+			if ($day != $iday) {
+				$img = $images[0];
+				file_put_contents("iotda.dat", $day);
+				file_put_contents("iotdb.dat", $img);
 			}
-			
+			echo "<style>
+				body  {
+					background-image: url('$img');
+					background-repeat: no-repeat;
+					background-attachment: fixed;
+					background-size:cover;
+					background-position:center;
+				}
+			</style>";
+			//*** END ***
+		?>
+		
+		<style>	
 			h1, h2, p, a {
 				font-family: 'Roboto', sans-serif;
 			}
