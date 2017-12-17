@@ -41,7 +41,7 @@
 	</head>
 	<body onload="pageloaded()" style="margin:0;">
 	  <div class="container">
-		<form method="GET" action="/fsbrowser.php">
+		<form method="GET" action="fsbrowser.php">
 			  <div class="modal fade" id="loginModal" role="dialog">
 				<div class="modal-dialog modal-bg">
 				  <div class="modal-content">
