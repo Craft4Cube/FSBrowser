@@ -189,7 +189,7 @@
 						$prev_dir = substr($fs_dir , 0,strrpos($fs_dir , '/'));
 						$prev_dir = substr($prev_dir , 0,strrpos($prev_dir , '/'))."/";
 						$url = "http://$_SERVER[HTTP_HOST]".strtok($_SERVER["REQUEST_URI"],'?');
-						$dwnurl = "http://$_SERVER[HTTP_HOST]/fsdownload.php";
+						$dwnurl = "http://$_SERVER[HTTP_HOST]".dirname($_SERVER['PHP_SELF'])."/fsdownload.php";
 						
 						if ($insecure) {
 							echo "<script> window.location = '$url?dir=$fs_dir&usr=$usr&hpass=$pass';</script>";
