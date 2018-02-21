@@ -13,7 +13,11 @@
 		if (!(strpos($file, file_get_contents("../accounts/$usr.home")) !== false)) {} else {
 			header('content-type:application/binary');
 			Header("Content-Disposition: attachment; filename=$file");
-			exit(file_get_contents($file));
+			$fp = fopen($file, 'r');
+			while (false !== ($char = fgetc($fp))) {
+			    echo "$char";
+			}			
+			exit();
 		}
 	}
 ?>
