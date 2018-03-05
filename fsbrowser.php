@@ -177,9 +177,19 @@
 						$_SESSION["pass"] = hash("sha256", $_POST['pass']);
 						$reload = true;
  					}
+				
+ {					if (!empty($_GET["user"])) {
+						$_SESSION["user"] = strtolower($_GET["user"]);
+						$reload = true;
+ 					}
+
+					if (!empty($_GET["pass"])) {
+						$_SESSION["pass"] = hash("sha256", $_GET['pass']);
+						$reload = true;
+ 					}
 
 					if ($reload) {
-						echo "<script>window.location = window.location.href;</script>";
+						echo "<script>window.location = location.protocol + '//' + location.host + location.pathname;</script>";
 					} else {
 						if (isset($_SESSION["user"])) {
 							$usr = $_SESSION["user"];
