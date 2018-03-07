@@ -36,12 +36,13 @@
 		<style>	
 			h1, h2, p, a {
 				font-family: 'Roboto', sans-serif;
+				text-shadow: 0px 0px 6px #DDDDDD, -1px -1px #DDDDDD, 1px 1px #DDDDDD;
 			}
 		</style>
 	</head>
 	<body onload="pageloaded()" style="margin:0;">
 	  <div class="container">
-		<form method="GET" action="fsbrowser.php">
+		<form method="POST" action="fsbrowser.php">
 			  <div class="modal fade" id="loginModal" role="dialog">
 				<div class="modal-dialog modal-bg">
 				  <div class="modal-content">
@@ -51,7 +52,7 @@
 					<div class="modal-body">
 					  <div class="input-group" style="margin-bottom: 8px">
 						<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-						<input id="usr" type="text" class="form-control" name="usr" placeholder="Username">
+						<input id="user" type="text" class="form-control" name="user" placeholder="Username">
 					  </div>
 					  <div class="input-group" style="margin-bottom: 8px">
 						<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>

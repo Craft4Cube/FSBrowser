@@ -18,6 +18,7 @@
 				file_put_contents("iotda.dat", $day);
 				file_put_contents("iotdb.dat", $img);
 			}
+
 			echo "<style>
 				body  {
 					background-image: url('$img');
@@ -58,6 +59,7 @@
 			
 			h1, h2, p, a, h4 {
 				font-family: 'Roboto', sans-serif;
+				text-shadow: 0px 0px 6px #DDDDDD, -1px -1px #DDDDDD, 1px 1px #DDDDDD;
 			}
 			
 			a {
@@ -161,51 +163,76 @@
 					error_reporting(0);
 					ini_set('display_errors', 0);
 							
-					$usr = strtolower($_GET['usr']);
-					$insecure = false;
-					if (!empty($_GET['hpass'])) {
-					  $pass = $_GET['hpass'];
+					//Start Session
+					session_start(); 
+
+					$reload = false;
+
+					if (!empty($_POST["user"])) {
+						$_SESSION["user"] = strtolower($_POST["user"]);
+						$reload = true;
+ 					}
+
+					if (!empty($_POST["pass"])) {
+						$_SESSION["pass"] = hash("sha256", $_POST['pass']);
+						$reload = true;
+ 					}
+				
+ {					if (!empty($_GET["user"])) {
+						$_SESSION["user"] = strtolower($_GET["user"]);
+						$reload = true;
+ 					}
+
+					if (!empty($_GET["pass"])) {
+						$_SESSION["pass"] = hash("sha256", $_GET['pass']);
+						$reload = true;
+ 					}
+
+					if ($reload) {
+						echo "<script>window.location = location.protocol + '//' + location.host + location.pathname;</script>";
 					} else {
-					  $pass = hash("sha256", $_GET['pass']);
-					  $insecure = true;
-					}
-								
-					if (!(file_get_contents("../accounts/$usr.acc") == $pass)) {
-						echo "<h1>Authentication Failure!<h1><br><h2>Username or Password invalid!<br><a href='/'>Go Back</a></h2>";
-					} else {	
-						if (!empty($_GET["dir"])) {
-							$fs_dir = $_GET["dir"];
-						} else {
-							$fs_dir = file_get_contents("../accounts/$usr.home");
+						if (isset($_SESSION["user"])) {
+							$usr = $_SESSION["user"];
+							$pass = $_SESSION["pass"];
 						}
-						
-						if (file_exists("../accounts/$usr.home")) {
-							if (!(strpos($fs_dir, file_get_contents("../accounts/$usr.home")) !== false)) {
+			
+						if (!(file_get_contents("../accounts/$usr.acc") == $pass)) {
+							echo "<h1>Authentication Failure!<h1><br><h2>Username or Password invalid!<br><a href='/'>Go Back</a></h2>";
+						} else {	
+							if (!empty($_GET["dir"])) {
+								$fs_dir = $_GET["dir"];
+							} else {
 								$fs_dir = file_get_contents("../accounts/$usr.home");
 							}
-						}
-
-						$prev_dir = substr($fs_dir , 0,strrpos($fs_dir , '/'));
-						$prev_dir = substr($prev_dir , 0,strrpos($prev_dir , '/'))."/";
-						$url = "http://$_SERVER[HTTP_HOST]".strtok($_SERVER["REQUEST_URI"],'?');
-						$dwnurl = "http://$_SERVER[HTTP_HOST]".dirname($_SERVER['PHP_SELF'])."/fsdownload.php";
 						
-						if ($insecure) {
-							echo "<script> window.location = '$url?dir=$fs_dir&usr=$usr&hpass=$pass';</script>";
-						} else {			
-							echo "<br>";
-							echo "<h1>FS Browser</h1>";
-							echo "<h2>$fs_dir</h2>";
-							
-							//if (substr_count($fs_dir,"/") > 1) {
-							//  drawIcon("Back", "fa-level-up", "$url?dir=$prev_dir&usr=$usr&hpass=$pass");
-							//}
-							
-							if (strpos($prev_dir, file_get_contents("../accounts/$usr.home")) !== false) {
-							  drawIcon("Back", "fa-level-up", "$url?dir=$prev_dir&usr=$usr&hpass=$pass");
+							if (file_exists("../accounts/$usr.home")) {
+								if (!(strpos($fs_dir, file_get_contents("../accounts/$usr.home")) !== false)) {
+									$fs_dir = file_get_contents("../accounts/$usr.home");
+								}
 							}
+
+							$prev_dir = substr($fs_dir , 0,strrpos($fs_dir , '/'));
+							$prev_dir = substr($prev_dir , 0,strrpos($prev_dir , '/'))."/";
+							$url = "http://$_SERVER[HTTP_HOST]".strtok($_SERVER["REQUEST_URI"],'?');
+							$dwnurl = "http://$_SERVER[HTTP_HOST]".dirname($_SERVER['PHP_SELF'])."/fsdownload.php";
+						
+							if ($insecure) {
+								echo "<script> window.location = '$url?dir=$fs_dir&usr=$usr&hpass=$pass';</script>";
+							} else {			
+								echo "<br>";
+								echo "<h1>FS Browser</h1>";
+								echo "<h2>$fs_dir</h2>";
 							
-							listFolder($fs_dir,$url,$dwnurl,$usr,$pass);
+								//if (substr_count($fs_dir,"/") > 1) {
+								//  drawIcon("Back", "fa-level-up", "$url?dir=$prev_dir&usr=$usr&hpass=$pass");
+								//}
+							
+								if (strpos($prev_dir, file_get_contents("../accounts/$usr.home")) !== false) {
+								  drawIcon("Back", "fa-level-up", "$url?dir=$prev_dir");
+								}
+							
+								listFolder($fs_dir,$url,$dwnurl,$usr,$pass);
+							}
 						}
 					}
 					
@@ -215,12 +242,12 @@
 					  $files = scandir($dir);
 					  foreach ($files as $file) {
 						if (file_exists($dir.$file) && is_dir($dir.$file) && $file != ".." && $file != ".") {
-						  drawIcon($file, getIcon(mime_content_type($dir.$file)),"$url?dir=$dir$file/&usr=$usr&hpass=$pass");
+						  drawIcon($file, getIcon(mime_content_type($dir.$file)),"$url?dir=$dir$file/");
 						}
 					  }
 					  foreach ($files as $file) {
 						if (file_exists($dir.$file) && !is_dir($dir.$file) && $file != ".." && $file != ".") {
-						  drawIcon($file, getIcon(mime_content_type($dir.$file)),"$dwnurl?file=$dir$file&usr=$usr&hpass=$pass");
+						  drawIcon($file, getIcon(mime_content_type($dir.$file)),"$dwnurl?file=$dir$file");
 						}
 					  }
 					}
@@ -265,7 +292,7 @@
 					  return 'fa-file-o';
 					}
 				?>
-				<center><h4>Copyright 2017 - Lukas Schmid</h4></center>
+				<center><h4>Copyright 2017 - Lukas Schmid - <a href='fslogout.php'>Logout</a></h4></center>
 				<script>
 				var myVar;
 
