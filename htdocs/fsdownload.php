@@ -9,7 +9,7 @@
 	}
 
 	if (file_get_contents("../accounts/$usr.acc") == $pass) {
-		$file = $_GET['file'];
+		$file = $_REQUEST['file'];
 		if (!(strpos($file, file_get_contents("../accounts/$usr.home")) !== false)) {} else {
 			header('content-type:application/binary');
 			Header("Content-Disposition: attachment; filename=$file");
