@@ -292,7 +292,7 @@
 					  return 'fa-file-o';
 					}
 				?>
-				<center><h4>Copyright 2017 - Lukas Schmid - <a href='fslogout.php'>Logout</a></h4></center>
+				<center><h4>Copyright <?php echo date("Y"); ?> - Lukas Schmid - <a href='fslogout.php'>Logout</a></h4></center>
 				<script>
 				var myVar;
 
