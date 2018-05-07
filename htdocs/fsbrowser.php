@@ -168,27 +168,17 @@
 
 					$reload = false;
 
-					if (!empty($_POST["user"])) {
-						$_SESSION["user"] = strtolower($_POST["user"]);
+					if (!empty($_REQUEST["user"])) {
+						$_SESSION["user"] = strtolower($_REQUEST["user"]);
 						$reload = true;
  					}
 
-					if (!empty($_POST["pass"])) {
-						$_SESSION["pass"] = hash("sha256", $_POST['pass']);
+					if (!empty($_REQUEST["pass"])) {
+						$_SESSION["pass"] = hash("sha256", $_REQUEST['pass']);
 						$reload = true;
  					}
 				
- {					if (!empty($_GET["user"])) {
-						$_SESSION["user"] = strtolower($_GET["user"]);
-						$reload = true;
- 					}
-
-					if (!empty($_GET["pass"])) {
-						$_SESSION["pass"] = hash("sha256", $_GET['pass']);
-						$reload = true;
- 					}
-
-					if ($reload) {
+ {					if ($reload) {
 						echo "<script>window.location = location.protocol + '//' + location.host + location.pathname;</script>";
 					} else {
 						if (isset($_SESSION["user"])) {
@@ -199,8 +189,8 @@
 						if (!(file_get_contents("../accounts/$usr.acc") == $pass)) {
 							echo "<h1>Authentication Failure!<h1><br><h2>Username or Password invalid!<br><a href='/'>Go Back</a></h2>";
 						} else {	
-							if (!empty($_GET["dir"])) {
-								$fs_dir = $_GET["dir"];
+							if (!empty($_REQUEST["dir"])) {
+								$fs_dir = $_REQUEST["dir"];
 							} else {
 								$fs_dir = file_get_contents("../accounts/$usr.home");
 							}
