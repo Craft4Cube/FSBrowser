@@ -178,7 +178,7 @@
 						$reload = true;
  					}
 				
- {					if ($reload) {
+ 					if ($reload) {
 						echo "<script>window.location = location.protocol + '//' + location.host + location.pathname;</script>";
 					} else {
 						if (isset($_SESSION["user"])) {
