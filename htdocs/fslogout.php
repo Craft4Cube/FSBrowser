@@ -162,9 +162,9 @@
 					session_start(); 
 					unset($_SESSION["user"]);
 					unset($_SESSION["pass"]);
-					echo "<h1>Logged out<h1><br><a href='/'>Go Back</a></h2>";
+					echo "<h1>Logged out</h1><br><h2><a href='/'>Go Back</a></h2>";
 					?>
-					<center><h4>Copyright 2017 - Lukas Schmid</h4></center>
+					<center><h4>Copyright <?php echo date("Y"); ?> - Lukas Schmid</h4></center>
 					<script>
 					var myVar;
 
